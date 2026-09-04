@@ -69,10 +69,19 @@ export default class S3Storage extends BaseStorage {
     contentLength: number,
     contentType: string
   ): Promise<{ url: string; headers: Record<string, string> }> {
+    const parsedKey = AttachmentHelper.parseKey(key);
     const contentDisposition = this.getContentDisposition(
       contentType,
-      AttachmentHelper.parseKey(key).fileName
+      parsedKey.fileName
     );
+
+    Logger.debug("utils", "S3Storage.getPresignedPut", {
+      key,
+      parsedKey,
+      fileName: parsedKey.fileName,
+      contentDisposition,
+    });
+
     const cacheControl = "max-age=31557600";
 
     const { sdk, client } = await this.getS3();

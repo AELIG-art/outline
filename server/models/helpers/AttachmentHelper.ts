@@ -57,6 +57,15 @@ export default class AttachmentHelper {
     const id = parts[2];
     const fileName = parts.length > 3 ? parts[parts.length - 1] : undefined;
 
+    Logger.debug("utils", "AttachmentHelper.parseKey", {
+      key,
+      parts,
+      bucket,
+      userId,
+      id,
+      fileName,
+    });
+
     return {
       bucket,
       userId,
