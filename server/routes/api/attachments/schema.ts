@@ -20,7 +20,13 @@ export const AttachmentsCreateSchema = BaseSchema.extend({
     id: z.uuid().optional(),
 
     /** Attachment name */
-    name: z.string(),
+    name: z
+      .string()
+      .trim()
+      .min(1, { message: "name is required" })
+      .refine((value) => value !== "undefined", {
+        message: "name is required",
+      }),
 
     /** Id of the document to which the Attachment belongs */
     documentId: z.uuid().optional(),
