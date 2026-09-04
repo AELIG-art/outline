@@ -54,15 +54,28 @@ export class ValidateKey {
    *
    * @param key
    * @returns sanitized key
+   * @throws ValidationError if the filename segment of the key is missing,
+   * empty, or the literal string "undefined"
    */
   public static sanitize = (key: string) => {
     const [filename] = key.split("/").slice(-1);
+
+    if (!filename || typeof filename !== "string") {
+      throw ValidationError("Filename is required");
+    }
+
+    const trimmedFilename = filename.trim();
+
+    if (!trimmedFilename || trimmedFilename === "undefined") {
+      throw ValidationError("Filename cannot be empty or undefined");
+    }
+
     return key
       .split("/")
       .slice(0, -1)
       .filter((part) => part !== "" && part !== ".." && part !== ".")
       .join("/")
-      .concat(`/${sanitize(filename.replace(/#/g, ""))}`);
+      .concat(`/${sanitize(trimmedFilename.replace(/#/g, ""))}`);
   };
 
   /**
