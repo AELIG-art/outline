@@ -378,6 +378,11 @@ export default class S3Storage extends BaseStorage {
         forcePathStyle: env.AWS_S3_FORCE_PATH_STYLE,
         region: env.AWS_REGION,
         endpoint: this.getEndpoint(),
+        // Automatic checksums are embedded in presigned PUT URLs before the
+        // browser payload is available, resulting in the checksum for an empty
+        // body and a rejected upload on S3-compatible providers.
+        requestChecksumCalculation: "WHEN_REQUIRED",
+        responseChecksumValidation: "WHEN_REQUIRED",
       });
       return { sdk, client };
     })();

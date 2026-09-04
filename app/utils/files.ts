@@ -50,7 +50,7 @@ export const uploadFile = async (
     preset: AttachmentPreset.DocumentAttachment,
   }
 ) => {
-  const name = file instanceof File ? file.name : options.name;
+  const name = file instanceof File ? file.name : (options.name ?? "upload");
   const response = await client.post("/attachments.create", {
     preset: options.preset,
     documentId: options.documentId,
