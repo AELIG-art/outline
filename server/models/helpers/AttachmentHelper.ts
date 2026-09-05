@@ -55,7 +55,7 @@ export default class AttachmentHelper {
     const bucket = parts[0];
     const userId = parts[1];
     const id = parts[2];
-    const fileName = parts.length > 3 ? parts[parts.length - 1] : undefined;
+    const [fileName] = parts.length > 3 ? parts.slice(-1) : [];
 
     return {
       bucket,
